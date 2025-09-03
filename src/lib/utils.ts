@@ -5,5 +5,3 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-
-export const API = "http://localhost:5000/api/users"
