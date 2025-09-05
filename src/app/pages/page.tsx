@@ -481,8 +481,8 @@ export default function GestionDechargement() {
                         <input
                           type="number"
                           className="w-full p-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                          value={product.quantite}
-                           onChange={(e) => updateProduct(product.id, 'quantite', (e.target.value) || 0)}
+                          value={product.quantite || ''}
+                           onChange={(e) => updateProduct(product.id, 'quantite', parseInt(e.target.value) || 0)}
                           min="0"
                         />
                       </td>
@@ -490,8 +490,8 @@ export default function GestionDechargement() {
                         <input
                           type="number"
                           className="w-full p-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                          value={product.prixUsine}
-                          onChange={(e) => updateProduct(product.id, 'prixUsine', (e.target.value) || 0)}
+                          value={product.prixUsine || ""}
+                          onChange={(e) => updateProduct(product.id, 'prixUsine', parseInt(e.target.value) || 0)}
                           min="0"
                         />
                       </td>
@@ -504,8 +504,8 @@ export default function GestionDechargement() {
                         <input
                           type="number"
                           className="w-full p-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                          value={product.prixCotonou}
-                          onChange={(e) => updateProduct(product.id, 'prixCotonou', (e.target.value) || 0)}
+                          value={product.prixCotonou || ''}
+                          onChange={(e) => updateProduct(product.id, 'prixCotonou', parseInt(e.target.value) || 0)}
                           min="0"
                         />
                       </td>
@@ -568,7 +568,7 @@ export default function GestionDechargement() {
               <input
                 type="number"
                 className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                value={depenses.douane}
+                value={depenses.douane  || ''}
                 onChange={(e) => updateDepense('douane', parseFloat(e.target.value) || 0)}
                 min="0"
               />
@@ -578,7 +578,7 @@ export default function GestionDechargement() {
               <input
                 type="number"
                 className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                value={depenses.transport}
+                value={depenses.transport || ''}
                  onChange={(e) => updateDepense('transport', parseFloat(e.target.value) || 0)}
                 min="0"
               />
@@ -588,7 +588,7 @@ export default function GestionDechargement() {
               <input
                 type="number"
                 className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                value={depenses.imprevu}
+                value={depenses.imprevu || ''}
                  onChange={(e) => updateDepense('imprevu', parseFloat(e.target.value) || 0)}
                 min="0"
               />
