@@ -1,26 +1,6 @@
 'use client'
-// import { useState, useRef, useEffect } from 'react';
-// import { toPng } from 'html-to-image';
-// import * as XLSX from 'xlsx';
-// import { saveAs } from 'file-saver';
-// import {
-//   Document,
-//   Packer,
-//   Paragraph,
-//   Table,
-//   TableRow,
-//   TableCell,
-//   WidthType,
-//   AlignmentType,
-//   VerticalAlign,
-//   HeightRule,
-//   HeadingLevel
-// } from 'docx';
-// import { FaRegFilePdf, FaRegFileWord, FaRegTrashAlt } from "react-icons/fa";
-// import { PiMicrosoftExcelLogoBold } from "react-icons/pi";
 
-
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { toPng } from 'html-to-image';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
@@ -40,7 +20,8 @@ import {
 import { FaRegFilePdf, FaRegFileWord, FaRegTrashAlt } from "react-icons/fa";
 import { PiMicrosoftExcelLogoBold } from "react-icons/pi";
 import { useStore } from '@/store/useStore';
- 
+import { ExportModal } from '@/components/ExportModal';
+
 
 export default function GestionDechargement() {
    const {
@@ -65,6 +46,11 @@ export default function GestionDechargement() {
   const benefices = getBenefices();
   const productsWithCalculations = getProductsWithCalculations();
 
+  const [showPdfModal, setShowPdfModal] = useState(false)
+  const [showExcelModal, setShowExcelModal] = useState(false)
+  const [showWordModal, setShowWordModal] = useState(false)
+  const [exportFileName, setExportFileName] = useState('gestion-dechargement')
+  
   const tableRef = useRef<HTMLDivElement>(null);
 
   // Gestion de l'ajout automatique
@@ -77,22 +63,22 @@ export default function GestionDechargement() {
   }, [products]);
 
   // Exportation en PDF
-  const exportToPDF = async () => {
-    if (tableRef.current === null) return;
+  // const exportToPDF = async (fileName: string) => {
+  //   if (tableRef.current === null) return;
 
-    try {
-      const dataUrl = await toPng(tableRef.current, { backgroundColor: '#ffffff' });
-      const link = document.createElement('a');
-      link.download = 'gestion-dechargement.png';
-      link.href = dataUrl;
-      link.click();
-    } catch (error) {
-      console.error('Erreur lors de l\'export PDF:', error);
-    }
-  };
+  //   try {
+  //     const dataUrl = await toPng(tableRef.current, { backgroundColor: '#ffffff' });
+  //     const link = document.createElement('a');
+  //     link.download = `${fileName}.png`;
+  //     link.href = dataUrl;
+  //     link.click();
+  //   } catch (error) {
+  //     console.error('Erreur lors de l\'export PDF:', error);
+  //   }
+  // };
 
   // Exportation en Excel
-  const exportToExcel = () => {
+  const exportToExcel = (fileName: string) => {
     // Filtrer les produits vides (dernière ligne vide)
     const produitsNonVides = productsWithCalculations.filter(p =>
       p.article !== '' || p.quantite > 0 || p.prixUsine > 0 ||
@@ -129,10 +115,10 @@ export default function GestionDechargement() {
 
     XLSX.utils.book_append_sheet(workbook, depensesSheet, 'Dépenses et les totaux');
 
-    XLSX.writeFile(workbook, 'gestion-dechargement.xlsx');
+    XLSX.writeFile(workbook, `${fileName}.xlsx`);
   };
 
-  const exportToWord = async () => {
+  const exportToWord = async (fileName: string) => {
     const produitsNonVides = productsWithCalculations.filter(p =>
       p.article !== '' || p.quantite > 0 || p.prixUsine > 0 ||
       p.prixCotonou > 0 || p.prixVenteCotonou > 0
@@ -433,12 +419,35 @@ export default function GestionDechargement() {
     });
 
     Packer.toBlob(doc).then(blob => {
-      saveAs(blob, 'gestion-dechargement.docx');
+      saveAs(blob, `${fileName}.docx`);
     });
   };
 
   return (
     <div className="min-h-screen bg-gray-100 py-6 px-4 sm:px-6 lg:px-8">
+       {/* <ExportModal
+        isOpen={showPdfModal}
+        onClose={() => setShowPdfModal(false)}
+        onConfirm={exportToPDF}
+        defaultName={exportFileName}
+        title="Exporter en PDF"
+      /> */}
+      
+      <ExportModal
+        isOpen={showExcelModal}
+        onClose={() => setShowExcelModal(false)}
+        onConfirm={exportToExcel}
+        defaultName={exportFileName}
+        title="Exporter en Excel"
+      />
+      
+      <ExportModal
+        isOpen={showWordModal}
+        onClose={() => setShowWordModal(false)}
+        onConfirm={exportToWord}
+        defaultName={exportFileName}
+        title="Exporter en Word"
+      />
       <main className="max-w-7xl mx-auto space-y-8">
         <section className="bg-white rounded-lg p-6 shadow-md">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
@@ -532,17 +541,17 @@ export default function GestionDechargement() {
           </div>
           <div className="flex mt-4 justify-end items-center gap-3">
             <div className='flex justify-between items-center gap-2'>
-              <button
+              {/* <button
                 className="text-black border border-gray-300 hover:bg-gray-100 p-2 rounded-md flex items-center"
-                onClick={exportToPDF}
+                 onClick={() => setShowPdfModal(true)}
                 title="Exporter en PDF"
               >
                 <FaRegFilePdf className="mr-1" />
                 <span>PDF</span>
-              </button>
+              </button> */}
               <button
                 className="text-black border border-gray-300 hover:bg-gray-100 p-2 rounded-md flex items-center"
-                onClick={exportToExcel}
+                onClick={() => setShowExcelModal(true)}
                 title="Exporter en Excel"
               >
                 <PiMicrosoftExcelLogoBold className="mr-1" />
@@ -550,7 +559,7 @@ export default function GestionDechargement() {
               </button>
               <button
                 className="text-black border border-gray-300 hover:bg-gray-100 p-2 rounded-md flex items-center"
-                onClick={exportToWord}
+                onClick={() => setShowWordModal(true)}
                 title="Exporter en Word"
               >
                 <FaRegFileWord className="mr-1" />
