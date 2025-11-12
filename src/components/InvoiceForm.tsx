@@ -110,7 +110,7 @@ export default function InvoiceForm({
               <input
                 type="number"
                 placeholder="Qté"
-                className="w-16 p-2 border rounded"
+                className="w-12 md:w-16 p-2 border rounded"
                 value={item.quantity}
                 onChange={(e) => updateItem(index, 'quantity', parseInt(e.target.value) || 0)}
                 min="1"
@@ -118,14 +118,14 @@ export default function InvoiceForm({
               <input
                 type="text"
                 placeholder="Désignation"
-                className="flex-1 p-2 border rounded"
+                className="flex-1 p-2 border rounded w-28 md:w-full"
                 value={item.description}
                 onChange={(e) => updateItem(index, 'description', e.target.value)}
               />
               <input
                 type="text"
                 placeholder="Prix unitaire HT"
-                className="w-32 p-2 border rounded"
+                className="w-14 md:w-32 p-2 border rounded"
                 value={formatPriceForDisplay(item.unitPrice)}
                 onChange={(e) => handlePriceChange(index, e.target.value)}
               />

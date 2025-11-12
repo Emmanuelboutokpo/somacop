@@ -21,6 +21,8 @@ import { FaRegFilePdf, FaRegFileWord, FaRegTrashAlt } from "react-icons/fa";
 import { PiMicrosoftExcelLogoBold } from "react-icons/pi";
 import { useStore } from '@/store/useStore';
 import { ExportModal } from '@/components/ExportModal';
+import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
 
 
 export default function GestionDechargement() {
@@ -424,6 +426,8 @@ export default function GestionDechargement() {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="min-h-screen bg-gray-100 py-6 px-4 sm:px-6 lg:px-8">
        {/* <ExportModal
         isOpen={showPdfModal}
@@ -617,5 +621,7 @@ export default function GestionDechargement() {
         </section>
       </main>
     </div>
+    <Footer />
+    </>
   );
 }

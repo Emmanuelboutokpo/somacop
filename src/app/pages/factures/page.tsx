@@ -1,6 +1,8 @@
 "use client"
+import Footer from '@/components/Footer';
 import InvoiceForm from '@/components/InvoiceForm';
 import InvoicePreview from '@/components/InvoicePreview';
+import Navbar from '@/components/Navbar';
 import { InvoiceData } from '@/lib/type';
 import { useEffect, useRef, useState } from 'react';
 
@@ -264,6 +266,8 @@ export default function Home() {
   };
 
   return (
+   <>
+    <Navbar/>
     <div className="min-h-screen bg-gray-100 py-8">
       <div className="container mx-auto px-4">
         <h1 className="text-3xl font-bold text-center mb-8">Application de Facturation</h1>
@@ -291,6 +295,8 @@ export default function Home() {
             </div>
         </div>
       </div>
-    </div>
+    </div>   
+    <Footer/>
+   </>
   );
 }
