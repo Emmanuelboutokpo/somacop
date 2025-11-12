@@ -157,3 +157,18 @@
 .read-the-docs {
   color: #888;
 }
+
+.facture-container {
+  border: 2px solid black;
+  padding: 1.5rem;
+  max-width: 210mm;
+  margin: 0 auto;
+  background: white;
+}
+
+@media screen {
+  .facture-container {
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+}
