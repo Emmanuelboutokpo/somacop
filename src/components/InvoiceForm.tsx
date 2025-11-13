@@ -1,5 +1,5 @@
 import { InvoiceData, InvoiceItem } from "@/lib/type";
-import { Trash2 } from "lucide-react";
+import { FileDown, Printer, Trash2 } from "lucide-react";
 
 interface InvoiceFormProps {
   invoiceData: InvoiceData;
@@ -11,6 +11,7 @@ interface InvoiceFormProps {
   setShowPreview: (show: boolean) => void;
   showPreview: boolean;
   onPrint: () => void;
+  onExportPDF: (fileName: string) => void;  
 }
 
 export default function InvoiceForm({
@@ -22,7 +23,8 @@ export default function InvoiceForm({
   calculateTotals,
   setShowPreview,
   showPreview,
-  onPrint
+  onPrint,
+  onExportPDF
 }: InvoiceFormProps) {
   const { totalHT, tva, totalTTC } = calculateTotals();
 
@@ -34,6 +36,11 @@ export default function InvoiceForm({
 
   const formatPriceForDisplay = (price: number): string => {
     return price === 0 ? '' : price.toString().replace('.', ',');
+  };
+
+   const handleDownloadPDF = () => {
+    const fileName = `facture-${invoiceData.invoiceNumber || 'sans-numero'}`;
+    onExportPDF(fileName);
   };
 
   return (
@@ -144,12 +151,21 @@ export default function InvoiceForm({
   
       </div>
       
-      <div className="flex justify-end items-center pt-4 border-t">
+      <div className="flex justify-between items-center pt-4 border-t">
+         <button
+            type="button"
+            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 font-medium flex items-center gap-2"
+            onClick={handleDownloadPDF}
+          >
+           <FileDown />
+            Télécharger PDF
+          </button>
         <button
           type="button"
-          className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 font-medium"
+          className="bg-green-500 text-white px-6 py-2 gap-2 flex items-center rounded hover:bg-green-600 font-medium"
           onClick={onPrint}
         >
+          <Printer />
           Imprimer la facture
         </button>
       </div>

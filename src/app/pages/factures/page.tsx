@@ -4,6 +4,7 @@ import InvoiceForm from '@/components/InvoiceForm';
 import InvoicePreview from '@/components/InvoicePreview';
 import Navbar from '@/components/Navbar';
 import { InvoiceData } from '@/lib/type';
+import { toPng } from 'html-to-image';
 import { useEffect, useRef, useState } from 'react';
 
 
@@ -27,6 +28,7 @@ export default function Home() {
     additionalInfo: ''
   });
 
+  const invoiceRef = useRef<HTMLDivElement>(null);
   const printRef = useRef<HTMLDivElement>(null);
   const [showPreview, setShowPreview] = useState(false);
 
@@ -112,6 +114,26 @@ export default function Home() {
                     .facture-wrapper {
                       padding : 10px
                     }
+                    .facture-qr-container {
+                      display: flex;
+                      flex-direction: column; 
+                      justify-content:center; 
+                      align-items: center;
+                    }
+
+                    .facture-qr {
+                       background-color: #fff
+                       padding: 12px
+                       border-style: solid;
+                       border-color: #e5e7eb;
+                       border-radius: 14px
+                       border-width: 1px;
+                    }
+                    
+                     .facture-qr-text {
+                     color: #4a5565 
+                    }
+
                     .signature{
                       display: flex; 
                       justify-content:center; 
@@ -128,6 +150,7 @@ export default function Home() {
                     .grid-cols-12 { grid-template-columns: repeat(12, 1fr); }
                     .col-span-2 { grid-column: span 2; }
                     .col-span-7 { grid-column: span 7; }
+                    .col-span-5 { grid-column: span 5; }
                     .col-span-3 { grid-column: span 3; }
                     .gap-2 { gap: 0.5rem; }
                     .gap-8 { gap: 2rem; }
@@ -198,6 +221,26 @@ export default function Home() {
                       padding : 10px
                     }
 
+                    .facture-qr-container {
+                      display: flex;
+                      flex-direction: column; 
+                      justify-content:center; 
+                      align-items: center;
+                    }
+
+                    .facture-qr {
+                       background-color: #ffffff
+                       padding: 20px;
+                       border-style: solid;
+                       border-color: #e5e7eb ;
+                       border-width: 1px;
+                       border-radius: 14px;
+                    }
+                    
+                     .facture-qr-text {
+                     color: #4a5565 
+                    }
+
                     .signature{
                       display: flex; 
                       justify-content: center; 
@@ -214,6 +257,7 @@ export default function Home() {
                   .grid-cols-12 { grid-template-columns: repeat(12, 1fr); }
                   .col-span-2 { grid-column: span 2; }
                   .col-span-7 { grid-column: span 7; }
+                  .col-span-5 { grid-column: span 5; }
                   .col-span-3 { grid-column: span 3; }
                   .gap-2 { gap: 0.5rem; }
                   .gap-8 { gap: 2rem; }
@@ -265,6 +309,21 @@ export default function Home() {
     return { totalHT, tva, totalTTC };
   };
 
+      const exportToPDF = async (fileName: string) => {
+      if (invoiceRef.current === null) return;
+  
+      try {
+        const dataUrl = await toPng(invoiceRef.current, { backgroundColor: '#ffffff' });
+        const link = document.createElement('a');
+        link.download = `${fileName}.png`;
+        link.href = dataUrl;
+        link.click();
+      } catch (error) {
+        console.error('Erreur lors de l\'export PDF:', error);
+      }
+    };
+  
+
   return (
    <>
     <Navbar/>
@@ -272,7 +331,7 @@ export default function Home() {
       <div className="container mx-auto px-4">
         <h1 className="text-3xl font-bold text-center mb-8">Application de Facturation</h1>
         
-        <div className="flex flex-col max-h-[500px] overflow-y-auto lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-8">
           <div className="lg:w-1/2">
            <InvoiceForm 
             invoiceData={invoiceData}
@@ -284,6 +343,7 @@ export default function Home() {
             setShowPreview={setShowPreview}
             showPreview={showPreview}
             onPrint={handlePrint}
+            onExportPDF={exportToPDF}
           />
           </div>
         
@@ -291,6 +351,7 @@ export default function Home() {
               <InvoicePreview 
                 invoiceData={invoiceData}
                 calculateTotals={calculateTotals}
+                ref={invoiceRef} 
               />
             </div>
         </div>
