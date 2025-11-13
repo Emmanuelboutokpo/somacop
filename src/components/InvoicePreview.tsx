@@ -59,7 +59,7 @@ const InvoicePreview = forwardRef<HTMLDivElement, InvoicePreviewProps>(
         <div className="mb-6">
           <div className="grid grid-cols-12 gap-2 font-semibold border-b pb-2 mb-2">
             <div className="col-span-2 text-center">Quantité</div>
-            <div className="col-span-5 text-center">Désignation</div>
+            <div className="col-span-5 ml-[24px] md:ml-0 text-center">Désignation</div>
             <div className="col-span-2 text-center">Prix unitaire</div>
             <div className="col-span-3 text-center">Montant total</div>
           </div>
