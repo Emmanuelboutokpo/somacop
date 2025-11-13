@@ -154,7 +154,7 @@ export default function InvoiceForm({
       <div className="flex justify-between items-center pt-4 border-t">
          <button
             type="button"
-            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 font-medium flex items-center gap-2"
+            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 font-medium text-sm flex items-center gap-2"
             onClick={handleDownloadPDF}
           >
            <FileDown />
@@ -162,7 +162,7 @@ export default function InvoiceForm({
           </button>
         <button
           type="button"
-          className="bg-green-500 text-white px-6 py-2 gap-2 flex items-center rounded hover:bg-green-600 font-medium"
+          className="bg-green-500 text-white  ml-3 px-6 py-2 gap-2 flex items-center text-sm rounded hover:bg-green-600 font-medium"
           onClick={onPrint}
         >
           <Printer />
